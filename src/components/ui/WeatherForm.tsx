@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from './form';
 import { Input } from './input';
+import { useEffect } from 'react';
 
 function WeatherForm(props: {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -16,9 +17,22 @@ function WeatherForm(props: {
 
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLocation(values.location);
+  async function getWeather() {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=Detroit&appid=${apiKey}&units=imperial`
+    );
+    const data = await response.json();
 
+    const temperature = Math.floor(data.main.temp);
+
+    setTemperature(temperature);
+  }
+
+  useEffect(() => {
+    getWeather();
+  }, []);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${values.location}&appid=${apiKey}&units=imperial`
     );
