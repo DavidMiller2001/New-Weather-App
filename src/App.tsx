@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from './components/ui/card';
 import './globals.css';
-
+import WeatherDisplay from './components/ui/WeatherDisplay';
 function App() {
   return (
     <>
@@ -20,7 +20,9 @@ function App() {
               openweathermap api!
             </CardDescription>
           </CardHeader>
-          <CardContent>Hello</CardContent>
+          <CardContent>
+            <WeatherDisplay />
+          </CardContent>
           <CardFooter>
             <CardDescription>David Miller 2024</CardDescription>
           </CardFooter>
