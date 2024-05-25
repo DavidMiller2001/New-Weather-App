@@ -5,16 +5,19 @@ import { useState } from 'react';
 function WeatherDisplay() {
   const [location, setLocation] = useState('Detroit');
   const [temperature, setTemperature] = useState(69);
+  const [inFahrenheit, setInFahrenheit] = useState(true);
   return (
     <>
       <div className='flex flex-col items-center p-4'>
         <div className='flex w-full justify-center gap-2 items-center'>
           <Sun size={50} />
-          <h3 className='text-4xl'>{temperature}°</h3>
+          <h3 className='text-4xl'>
+            {temperature}°{inFahrenheit ? 'F' : 'C'}
+          </h3>
         </div>
         <h1>{location}</h1>
       </div>
-      <WeatherForm setLocation={setLocation} />
+      <WeatherForm setLocation={setLocation} setTemperature={setTemperature} />
     </>
   );
 }
