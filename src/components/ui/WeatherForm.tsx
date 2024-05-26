@@ -9,8 +9,10 @@ import { Button } from './button';
 function WeatherForm(props: {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   setTemperature: React.Dispatch<React.SetStateAction<number>>;
+  setConditionStr: React.Dispatch<React.SetStateAction<string>>;
+  setIconUrl: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { setLocation, setTemperature } = props;
+  const { setLocation, setTemperature, setConditionStr, setIconUrl } = props;
 
   const formSchema = z.object({
     location: z.string().max(50),
@@ -18,24 +20,9 @@ function WeatherForm(props: {
 
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  async function getWeather() {
+  async function getWeather(location: string) {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=Detroit&appid=${apiKey}&units=imperial`
-    );
-    const data = await response.json();
-
-    const temperature = Math.floor(data.main.temp);
-
-    setTemperature(temperature);
-  }
-
-  useEffect(() => {
-    getWeather();
-  }, []);
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${values.location}&appid=${apiKey}&units=imperial`
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=imperial`
     );
 
     if (response.status !== 200) {
@@ -45,10 +32,33 @@ function WeatherForm(props: {
 
     const data = await response.json();
 
-    const temperature = Math.floor(data.main.temp);
+    // console.log(data);
 
-    setLocation(values.location);
+    const temperature = Math.floor(data.main.temp);
+    const condition = data.weather[0].main;
+    const icon = data.weather[0].icon;
+
+    setLocation(capitalize(location));
     setTemperature(temperature);
+    setConditionStr(condition);
+    setIconUrl(icon);
+  }
+
+  useEffect(() => {
+    getWeather('Detroit');
+  }, []);
+
+  // Capitalizes the first letter of each word in a string
+  function capitalize(str: string): string {
+    str = str
+      .split(' ')
+      .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(' ');
+    return str;
+  }
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    getWeather(values.location);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

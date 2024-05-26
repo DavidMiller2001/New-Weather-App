@@ -26,6 +26,8 @@ export function WeatherDisplayv0() {
   const [location, setLocation] = useState('Detroit');
   const [temperature, setTemperature] = useState(69);
   const [units, setUnits] = useState<Units>('imperial');
+  const [iconUrl, setIconUrl] = useState('');
+  const [conditionStr, setConditionStr] = useState('');
 
   return (
     <div
@@ -40,13 +42,13 @@ export function WeatherDisplayv0() {
         </div>
         <div className='flex flex-col items-center justify-center gap-6'>
           <div className='flex items-center gap-4'>
-            <CloudIcon className='w-16 h-16 text-sky-500 dark:text-sky-400' />
+            <img src={`https://openweathermap.org/img/wn/${iconUrl}@2x.png`} />
             <div>
               <div className='text-6xl font-bold text-gray-900 dark:text-gray-100'>
                 {temperature}°{units === 'imperial' ? 'F' : 'C'}
               </div>
               <div className='text-gray-600 dark:text-gray-400'>
-                Partly Cloudy
+                {conditionStr}
               </div>
             </div>
           </div>
@@ -55,11 +57,17 @@ export function WeatherDisplayv0() {
           <WeatherForm
             setLocation={setLocation}
             setTemperature={setTemperature}
+            setConditionStr={setConditionStr}
+            setIconUrl={setIconUrl}
           />
         </div>
       </div>
     </div>
   );
+}
+
+function WeatherIcon(props: { condition: string }) {
+  return <div></div>;
 }
 
 function CloudIcon(props: { className: string }) {
