@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from './form';
 import { Input } from './input';
 import { useEffect } from 'react';
+import { Button } from './button';
 
 function WeatherForm(props: {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -36,6 +37,12 @@ function WeatherForm(props: {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${values.location}&appid=${apiKey}&units=imperial`
     );
+
+    if (response.status !== 200) {
+      alert('Please try another location!');
+      return;
+    }
+
     const data = await response.json();
 
     const temperature = Math.floor(data.main.temp);
@@ -54,19 +61,33 @@ function WeatherForm(props: {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='flex items-center gap-2'
+        >
           <FormField
             control={form.control}
             name='location'
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder='Enter Location' {...field} />
+                  <Input
+                    className='grow-1 flex-1 rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400'
+                    placeholder='Enter a city'
+                    type='text'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <Button
+            className='rounded-md bg-sky-500 dark:bg-sky-400 px-4 py-2 text-white hover:bg-sky-600 dark:hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400'
+            type='submit'
+          >
+            Search
+          </Button>
         </form>
       </Form>
     </>

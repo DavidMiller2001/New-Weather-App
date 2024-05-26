@@ -74,3 +74,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* workaround because I couldn't find where the div surrounding the input in the shadcn form was*/
+*:has(.grow-1) {
+  flex-grow: 1;
+}
