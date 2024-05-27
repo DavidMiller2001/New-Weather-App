@@ -31,15 +31,14 @@ export function WeatherDisplayv0() {
   const [conditionStr, setConditionStr] = useState('');
 
   function formatLocationStr(location: string): string {
-    let formattedString = '';
-
     if (location.includes(',')) {
       const strSegments = location.split(',');
-      formattedString =
+      const formattedString =
         capitalize(strSegments[0]) + ', ' + strSegments[1].toUpperCase();
+      return formattedString;
     }
 
-    return formattedString;
+    return location;
   }
 
   return (
