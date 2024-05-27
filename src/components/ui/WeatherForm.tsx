@@ -5,63 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from './form';
 import { Input } from './input';
 import { useEffect } from 'react';
 import { Button } from './button';
-
-const STATES = [
-  'AL',
-  'AK',
-  'AZ',
-  'AR',
-  'CA',
-  'CO',
-  'CT',
-  'DE',
-  'FL',
-  'GA',
-  'HI',
-  'ID',
-  'IL',
-  'IN',
-  'IA',
-  'KS',
-  'KY',
-  'LA',
-  'ME',
-  'MD',
-  'MA',
-  'MI',
-  'MN',
-  'MS',
-  'MO',
-  'MT',
-  'NE',
-  'NV',
-  'NH',
-  'NJ',
-  'NM',
-  'NY',
-  'NC',
-  'ND',
-  'OH',
-  'OK',
-  'OR',
-  'PA',
-  'PR',
-  'RI',
-  'SC',
-  'SD',
-  'TN',
-  'TX',
-  'UT',
-  'VT',
-  'VA',
-  'VI',
-  'WA',
-  'WV',
-  'WI',
-  'WY',
-] as const;
-
-type STATE = (typeof STATES)[number];
+import { formatLocationStr } from '@/utils/stringStuff';
 
 function WeatherForm(props: {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -101,32 +45,6 @@ function WeatherForm(props: {
   useEffect(() => {
     getWeather('Detroit');
   }, []);
-
-  // Capitalizes the first letter of each word in a string
-  function capitalize(str: string): string {
-    str = str
-      .split(' ')
-      .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-      .join(' ');
-    return str;
-  }
-
-  function formatLocationStr(location: string): string {
-    const segments = location.split(',');
-    const city = capitalize(segments[0]);
-
-    if (segments.length < 2) {
-      return city;
-    }
-
-    const state = segments[1].replace(' ', '').toUpperCase();
-
-    if (STATES.includes(state as STATE)) {
-      return `${city},${state},us`;
-    }
-
-    return `${city},${state}`;
-  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formattedLocation = formatLocationStr(values.location);

@@ -21,13 +21,26 @@ To read more about using these font, please visit the Next.js documentation:
 import { useState } from 'react';
 import WeatherForm from './WeatherForm';
 import { CloudRain, Cloudy, Haze, SunMedium } from 'lucide-react';
+import { capitalize } from '@/utils/stringStuff';
 
 export function WeatherDisplayv0() {
-  type Units = 'standard' | 'imperial' | 'metric';
+  // type Units = 'standard' | 'imperial' | 'metric';
+  // const [units, setUnits] = useState<Units>('imperial');
   const [location, setLocation] = useState('Detroit');
   const [temperature, setTemperature] = useState(69);
-  const [units, setUnits] = useState<Units>('imperial');
   const [conditionStr, setConditionStr] = useState('');
+
+  function formatLocationStr(location: string): string {
+    let formattedString = '';
+
+    if (location.includes(',')) {
+      const strSegments = location.split(',');
+      formattedString =
+        capitalize(strSegments[0]) + ', ' + strSegments[1].toUpperCase();
+    }
+
+    return formattedString;
+  }
 
   return (
     <div
@@ -37,7 +50,7 @@ export function WeatherDisplayv0() {
       <div className='bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col gap-6'>
         <div className='mb-4'>
           <h2 className='text-5xl font-bold text-center text-gray-900 dark:text-gray-100'>
-            {location}
+            {formatLocationStr(location)}
           </h2>
         </div>
         <div className='flex flex-col items-center justify-center gap-6'>
@@ -79,7 +92,7 @@ function WeatherIcon(props: { condition: string }) {
       return <SunMedium {...iconProps} />;
     case 'rain':
       return <CloudRain {...iconProps} />;
-    case 'cloudy':
+    case 'clouds':
       return <Cloudy {...iconProps} />;
     case 'haze':
       return <Haze {...iconProps} />;
