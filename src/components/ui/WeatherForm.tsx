@@ -67,9 +67,8 @@ function WeatherForm(props: {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   setTemperature: React.Dispatch<React.SetStateAction<number>>;
   setConditionStr: React.Dispatch<React.SetStateAction<string>>;
-  setIconUrl: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { setLocation, setTemperature, setConditionStr, setIconUrl } = props;
+  const { setLocation, setTemperature, setConditionStr } = props;
 
   const formSchema = z.object({
     location: z.string().max(50),
@@ -93,12 +92,10 @@ function WeatherForm(props: {
 
     const temperature = Math.floor(data.main.temp);
     const condition = data.weather[0].main;
-    const icon = data.weather[0].icon;
 
     setLocation(location);
     setTemperature(temperature);
     setConditionStr(condition);
-    setIconUrl(icon);
   }
 
   useEffect(() => {

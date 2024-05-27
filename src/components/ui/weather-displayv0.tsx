@@ -20,14 +20,13 @@ To read more about using these font, please visit the Next.js documentation:
 
 import { useState } from 'react';
 import WeatherForm from './WeatherForm';
-import { CloudRain, Cloudy } from 'lucide-react';
+import { CloudRain, Cloudy, Haze, SunMedium } from 'lucide-react';
 
 export function WeatherDisplayv0() {
   type Units = 'standard' | 'imperial' | 'metric';
   const [location, setLocation] = useState('Detroit');
   const [temperature, setTemperature] = useState(69);
   const [units, setUnits] = useState<Units>('imperial');
-  const [iconUrl, setIconUrl] = useState('');
   const [conditionStr, setConditionStr] = useState('');
 
   return (
@@ -60,7 +59,6 @@ export function WeatherDisplayv0() {
             setLocation={setLocation}
             setTemperature={setTemperature}
             setConditionStr={setConditionStr}
-            setIconUrl={setIconUrl}
           />
         </div>
       </div>
@@ -72,33 +70,20 @@ function WeatherIcon(props: { condition: string }) {
   const ICON_SIZE = 125;
   const { condition } = props;
 
+  const iconProps = {
+    size: ICON_SIZE,
+  };
+
   switch (condition.toLowerCase()) {
+    case 'clear':
+      return <SunMedium {...iconProps} />;
     case 'rain':
-      return <CloudRain size={ICON_SIZE} />;
+      return <CloudRain {...iconProps} />;
     case 'cloudy':
-      return <Cloudy size={ICON_SIZE} />;
+      return <Cloudy {...iconProps} />;
+    case 'haze':
+      return <Haze {...iconProps} />;
     default:
       return <div className='text-3xl'>N/A</div>;
   }
-
-  return <div></div>;
-}
-
-function CloudIcon(props: { className: string }) {
-  return (
-    <svg
-      {...props}
-      xmlns='http://www.w3.org/2000/svg'
-      width='24'
-      height='24'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    >
-      <path d='M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z' />
-    </svg>
-  );
 }
