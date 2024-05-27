@@ -20,6 +20,7 @@ To read more about using these font, please visit the Next.js documentation:
 
 import { useState } from 'react';
 import WeatherForm from './WeatherForm';
+import { CloudRain, Cloudy } from 'lucide-react';
 
 export function WeatherDisplayv0() {
   type Units = 'standard' | 'imperial' | 'metric';
@@ -34,20 +35,21 @@ export function WeatherDisplayv0() {
       key='1'
       className='flex items-center justify-center h-screen w-screen bg-gradient-to-br from-sky-400 to-indigo-500'
     >
-      <div className='bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg max-w-sm w-full'>
+      <div className='bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col gap-6'>
         <div className='mb-4'>
-          <h2 className='text-3xl font-bold text-center text-gray-900 dark:text-gray-100'>
+          <h2 className='text-5xl font-bold text-center text-gray-900 dark:text-gray-100'>
             {location}
           </h2>
         </div>
         <div className='flex flex-col items-center justify-center gap-6'>
           <div className='flex items-center gap-4'>
-            <img src={`https://openweathermap.org/img/wn/${iconUrl}@2x.png`} />
+            {/* <img src={`https://openweathermap.org/img/wn/${iconUrl}@2x.png`} /> */}
+            <WeatherIcon condition={conditionStr} />
             <div>
-              <div className='text-6xl font-bold text-gray-900 dark:text-gray-100'>
-                {temperature}°{units === 'imperial' ? 'F' : 'C'}
+              <div className='text-8xl font-bold text-gray-900 dark:text-gray-100'>
+                {temperature}°
               </div>
-              <div className='text-gray-600 dark:text-gray-400'>
+              <div className='pl-1 text-gray-600 dark:text-gray-400 text-xl'>
                 {conditionStr}
               </div>
             </div>
@@ -67,6 +69,18 @@ export function WeatherDisplayv0() {
 }
 
 function WeatherIcon(props: { condition: string }) {
+  const ICON_SIZE = 125;
+  const { condition } = props;
+
+  switch (condition.toLowerCase()) {
+    case 'rain':
+      return <CloudRain size={ICON_SIZE} />;
+    case 'cloudy':
+      return <Cloudy size={ICON_SIZE} />;
+    default:
+      return <div className='text-3xl'>N/A</div>;
+  }
+
   return <div></div>;
 }
 
